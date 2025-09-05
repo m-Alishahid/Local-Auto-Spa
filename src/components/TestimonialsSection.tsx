@@ -46,15 +46,16 @@ const TestimonialsSection = () => {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: "easeInOut" as const, // TypeScript fix: ensure string literal
+        ease: "easeInOut" as const,
       },
     },
   };
 
   return (
     <section className="py-16 bg-white relative overflow-hidden">
-      <div className="absolute -top-40 -right-40 w-96 h-96 bg-decent-blue/5 rounded-full blur-3xl"></div>
-      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-decent-lightBlue/5 rounded-full blur-3xl"></div>
+      {/* Decorative circles in gray tones */}
+      <div className="absolute -top-40 -right-40 w-96 h-96 bg-gray-100 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gray-200 rounded-full blur-3xl"></div>
       
       <div className="container mx-auto px-4 relative z-10">
         <motion.div 
@@ -64,12 +65,14 @@ const TestimonialsSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-decent-blue mb-4">What Our Customers Say</h2>
-          <div className="w-24 h-1 bg-decent-lightBlue mx-auto mb-6 relative">
-            <div className="absolute -top-1 left-0 w-6 h-3 bg-decent-blue rounded-full animate-bounce"></div>
+          <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">
+            What Our Customers Say
+          </h2>
+          <div className="w-24 h-1 bg-gradient-to-r from-gray-800 via-gray-500 to-gray-800 mx-auto mb-6 relative">
+            <div className="absolute -top-1 left-0 w-6 h-3 bg-black rounded-full animate-bounce"></div>
           </div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Don't just take our word for it - here's what our satisfied customers have to say
+            Don't just take our word for it – here's what our satisfied customers have to say
           </p>
         </motion.div>
         

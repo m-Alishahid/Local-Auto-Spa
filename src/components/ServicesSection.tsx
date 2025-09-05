@@ -1,4 +1,3 @@
-
 import Link from "next/link";
 import ServiceCard from "@/components/ServiceCard";
 import { ArrowRight } from "lucide-react";
@@ -18,7 +17,7 @@ const ServicesSection = () => {
         "We bring all supplies and equipment",
       ],
       price: "$99",
-      link: "/services/car-detailing"
+      link: "/services/car-detailing",
     },
     {
       title: "Window Tinting",
@@ -31,7 +30,7 @@ const ServicesSection = () => {
         "Lifetime warranty available",
       ],
       price: "$199",
-      link: "/services/window-tinting"
+      link: "/services/window-tinting",
     },
     {
       title: "Ceramic Coating",
@@ -44,41 +43,53 @@ const ServicesSection = () => {
         "2-5 year durability",
       ],
       price: "$599",
-      link: "/services/ceramic-coating"
-    }
+      link: "/services/ceramic-coating",
+    },
   ];
 
   return (
-    <section id="premium-mobile-car-detailing" className="py-16 md:py-20 bg-gradient-to-b from-white to-decent-light relative overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute top-0 right-0 w-72 md:w-96 h-72 md:h-96 bg-decent-blue/5 rounded-full blur-3xl"></div>
-      <div className="absolute -bottom-20 -left-20 w-72 md:w-96 h-72 md:h-96 bg-decent-lightBlue/5 rounded-full blur-3xl"></div>
-      <div className="absolute top-1/2 left-1/3 w-20 h-20 bg-yellow-400/10 rounded-full blur-2xl"></div>
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <motion.div 
+    <section
+      id="premium-mobile-car-detailing"
+      className="py-20 md:py-28 bg-black relative overflow-hidden"
+    >
+      {/* Decorative Glows */}
+      <div className="absolute top-0 right-0 w-72 md:w-96 h-72 md:h-96 bg-white/5 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-20 -left-20 w-72 md:w-96 h-72 md:h-96 bg-gray-700/10 rounded-full blur-3xl"></div>
+      <div className="absolute top-1/3 left-1/3 w-24 h-24 bg-yellow-500/10 rounded-full blur-2xl"></div>
+
+      <div className="container mx-auto px-6 md:px-12 relative z-10">
+        {/* Heading */}
+        <motion.div
           className="text-center mb-12 md:mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-decent-blue mb-4 md:mb-5">Premium Mobile Car Detailing</h2>
-          <div className="w-24 md:w-32 h-1 bg-gradient-to-r from-decent-blue to-decent-lightBlue mx-auto mb-6 md:mb-8 relative">
-            <div className="absolute -top-1 left-0 w-4 md:w-6 h-2 md:h-3 bg-decent-lightBlue rounded-full animate-bounce"></div>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-4 md:mb-6">
+            Premium <span className="text-gray-300">Auto Spa Services</span>
+          </h2>
+
+          <div className="w-24 md:w-32 h-1 bg-gradient-to-r from-white via-gray-400 to-gray-700 mx-auto mb-6 md:mb-8 relative">
+            <div className="absolute -top-1 left-0 w-4 md:w-6 h-2 md:h-3 bg-gray-300 rounded-full animate-bounce"></div>
           </div>
-          <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
-            We offer a complete range of professional auto detailing services to keep your vehicle looking its absolute best
+
+          <p className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto">
+            Transform your ride with our exclusive detailing, tinting, and
+            ceramic coating — crafted for a{" "}
+            <span className="text-white font-semibold">luxury finish</span>.
           </p>
         </motion.div>
-        
+
+        {/* Service Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {services.map((service, index) => (
             <ServiceCard key={index} {...service} />
           ))}
         </div>
-        
-        <motion.div 
+
+        {/* Button */}
+        <motion.div
           className="mt-12 md:mt-16 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -86,8 +97,12 @@ const ServicesSection = () => {
           transition={{ duration: 0.5, delay: 0.6 }}
         >
           <Link href="/services">
-            <MotionButton 
-              className="bg-decent-blue hover:bg-decent-lightBlue text-white px-6 py-6 text-lg group"
+            <MotionButton
+              className="bg-gradient-to-r from-white to-gray-300 text-black font-semibold
+                         px-10 py-6 text-lg rounded-full shadow-md
+                         transition-all duration-300 ease-in-out
+                         hover:from-gray-200 hover:to-gray-400 hover:shadow-xl
+                         focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black group"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

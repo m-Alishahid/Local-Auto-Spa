@@ -1,18 +1,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 
 const FeaturedWorks = () => {
   const [activeTab, setActiveTab] = useState("all");
@@ -61,206 +52,119 @@ const FeaturedWorks = () => {
       ? beforeAfterImages
       : beforeAfterImages.filter((img) => img.category === activeTab);
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 },
-    },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
   return (
-    <section className="py-16 bg-gradient-to-b from-decent-light to-white">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
+    <section className="py-20 bg-white relative overflow-hidden">
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Header */}
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-14"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-decent-blue mb-4">
-            Our <span className="text-decent-lightBlue">Featured</span> Work
+          <h2 className="text-4xl md:text-5xl font-extrabold text-black mb-4">
+            Featured <span className="text-gray-600">Works</span>
           </h2>
-          <div className="w-24 h-1 bg-decent-lightBlue mx-auto mb-6 relative">
-            <div className="absolute -top-1 left-0 w-6 h-3 bg-decent-blue rounded-full animate-bounce"></div>
+          <div className="w-24 h-1 bg-gray-300 mx-auto mb-6 relative overflow-hidden">
+            <motion.div
+              className="absolute top-0 left-0 w-6 h-1 bg-black"
+              animate={{ x: [0, 90, 0] }}
+              transition={{ duration: 2.5, repeat: Infinity }}
+            />
           </div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            See the Decent Detailers difference with our before and after
-            transformations
+            See how we transform cars with our detailing expertise
           </p>
         </motion.div>
 
         {/* Filter Tabs */}
-        <motion.div
-          className="flex flex-wrap justify-center gap-4 mb-10"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
           {["all", "exterior", "interior", "ceramic", "tint"].map((tab) => (
             <Button
               key={tab}
-              variant={activeTab === tab ? "default" : "outline"}
+              variant="outline"
               onClick={() => setActiveTab(tab)}
-              className={`${
+              className={`capitalize border-gray-400 ${
                 activeTab === tab
-                  ? "bg-decent-blue hover:bg-decent-lightBlue scale-105 shadow-lg"
-                  : "text-decent-blue hover:scale-105"
-              } transition-all duration-300 capitalize`}
+                  ? "bg-black text-white font-semibold"
+                  : "text-gray-700 hover:text-black"
+              }`}
             >
               {tab === "all" ? "All Work" : tab}
-              {activeTab === tab && <ChevronRight className="ml-1 h-4 w-4" />}
+              {activeTab === tab && (
+                <ChevronRight className="ml-1 h-4 w-4" />
+              )}
             </Button>
           ))}
+        </div>
+
+        {/* Grid Layout */}
+        <motion.div
+          className={`grid gap-10 ${
+            filteredImages.length === 1
+              ? "grid-cols-1"
+              : "grid-cols-1 md:grid-cols-2"
+          }`}
+          initial="hidden"
+          animate="show"
+        >
+          {filteredImages.map((item) => (
+            <motion.div
+              key={item.id}
+              variants={itemVariants}
+              whileHover={{ scale: 1.02 }}
+              className="relative group rounded-2xl overflow-hidden bg-white border border-gray-200 shadow-md hover:shadow-lg transition"
+            >
+              {/* Image Overlay Effect */}
+              <div className="relative h-72 overflow-hidden">
+                <Image
+                  src={item.before}
+                  alt={`Before ${item.title}`}
+                  width={800}
+                  height={400}
+                  className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:opacity-0"
+                />
+                <Image
+                  src={item.after}
+                  alt={`After ${item.title}`}
+                  width={800}
+                  height={400}
+                  className="absolute inset-0 h-full w-full object-cover opacity-0 transition duration-700 group-hover:opacity-100"
+                />
+
+                {/* Labels */}
+                <div className="absolute top-4 left-4 bg-black/90 text-white px-4 py-1 text-sm rounded-full">
+                  Before
+                </div>
+                <div className="absolute top-4 right-4 bg-white/90 text-black px-4 py-1 text-sm rounded-full opacity-0 group-hover:opacity-100 transition">
+                  After
+                </div>
+              </div>
+
+              {/* Text Content */}
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-black mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-gray-700">{item.description}</p>
+                <Link href={item.link}>
+                  <Button
+                    variant="link"
+                    className="text-black hover:text-gray-600 p-0 mt-2"
+                  >
+                    View Details
+                    <ChevronRight className="ml-1 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+          ))}
         </motion.div>
-
-        {/* Desktop Grid */}
-        <div className="hidden md:block">
-          <motion.div
-            className={`grid gap-8 ${
-              filteredImages.length === 1
-                ? "grid-cols-1"
-                : "grid-cols-1 md:grid-cols-2"
-            }`}
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-          >
-            {filteredImages.map((item) => (
-              <motion.div
-                key={item.id}
-                variants={itemVariants}
-                whileHover={{
-                  scale: 1.03,
-                  boxShadow:
-                    "0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.1)",
-                }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <Card className="overflow-hidden transition-all duration-300 border-2 border-gray-100 hover:border-decent-lightBlue">
-                  <CardContent className="p-0">
-                    <div className="relative">
-                      <div className="grid grid-cols-2 gap-1">
-                        {/* Before */}
-                        <div className="relative group">
-                          <Image
-                            src={item.before}
-                            alt={`Before ${item.title}`}
-                            width={400}
-                            height={256}
-                            className="w-full h-64 object-cover transition-all duration-700 filter group-hover:brightness-90"
-                          />
-                          <div className="absolute top-4 left-4 bg-black/90 text-white px-4 py-1 text-sm rounded-full shadow-md">
-                            Before
-                          </div>
-                        </div>
-                        {/* After */}
-                        <div className="relative group">
-                          <Image
-                            src={item.after}
-                            alt={`After ${item.title}`}
-                            width={400}
-                            height={256}
-                            className="w-full h-64 object-cover transition-all duration-700 filter group-hover:brightness-110"
-                          />
-                          <div className="absolute top-4 right-4 bg-decent-blue text-white px-4 py-1 text-sm rounded-full shadow-md">
-                            After
-                          </div>
-                        </div>
-                      </div>
-                      <div className="p-6 bg-white border-t-2 border-decent-light">
-                        <h3 className="text-xl font-bold text-decent-blue group-hover:text-decent-lightBlue transition-colors duration-300">
-                          {item.title}
-                        </h3>
-                        <p className="text-gray-600">{item.description}</p>
-                        <Link href={item.link}>
-                          <Button
-                            variant="link"
-                            className="text-decent-lightBlue p-0 mt-2 hover:text-decent-blue transition-colors"
-                          >
-                            View Details <ChevronRight className="ml-1 h-4 w-4" />
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Mobile Carousel */}
-        <div className="md:hidden mt-6">
-          <Carousel className="w-full">
-            <CarouselContent>
-              {filteredImages.map((item) => (
-                <CarouselItem key={item.id} className="basis-full">
-                  <Card className="overflow-hidden border-2 border-gray-100 hover:border-decent-lightBlue">
-                    <CardContent className="p-0">
-                      <div className="relative">
-                        <div className="grid grid-cols-2 gap-1">
-                          {/* Before */}
-                          <div className="relative">
-                            <Image
-                              src={item.before}
-                              alt={`Before ${item.title}`}
-                              width={200}
-                              height={192}
-                              className="w-full h-48 object-cover"
-                            />
-                            <div className="absolute top-2 left-2 bg-black/90 text-white px-3 py-1 text-xs rounded-full">
-                              Before
-                            </div>
-                          </div>
-                          {/* After */}
-                          <div className="relative">
-                            <Image
-                              src={item.after}
-                              alt={`After ${item.title}`}
-                              width={200}
-                              height={192}
-                              className="w-full h-48 object-cover"
-                            />
-                            <div className="absolute top-2 right-2 bg-decent-blue text-white px-3 py-1 text-xs rounded-full">
-                              After
-                            </div>
-                          </div>
-                        </div>
-                        <div className="p-4 bg-white">
-                          <h3 className="text-lg font-bold text-decent-blue">
-                            {item.title}
-                          </h3>
-                          <p className="text-sm text-gray-600">
-                            {item.description}
-                          </p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <div className="flex justify-center gap-2 mt-4">
-              <CarouselPrevious className="relative h-8 w-8 border-decent-blue text-decent-blue" />
-              <CarouselNext className="relative h-8 w-8 border-decent-blue text-decent-blue" />
-            </div>
-          </Carousel>
-        </div>
       </div>
     </section>
   );

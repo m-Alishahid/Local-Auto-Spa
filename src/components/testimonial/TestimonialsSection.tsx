@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import TestimonialCard from "@/components/testimonial/TestimonialCard";
+import { Quote } from "lucide-react";
 
 const TestimonialsSection = () => {
   const testimonials = [
@@ -35,13 +36,9 @@ const TestimonialsSection = () => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2 },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
   };
 
-  // FIX: Use a cubic bezier array for 'ease' instead of a string
   const itemVariants = {
     hidden: { opacity: 0, y: 40 },
     visible: {
@@ -52,10 +49,10 @@ const TestimonialsSection = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-decent-light relative overflow-hidden">
-      {/* Background Glows */}
-      <div className="absolute -top-40 -right-40 w-[28rem] h-[28rem] bg-decent-blue/10 rounded-full blur-3xl"></div>
-      <div className="absolute -bottom-40 -left-40 w-[28rem] h-[28rem] bg-decent-lightBlue/10 rounded-full blur-3xl"></div>
+    <section className="py-20 bg-white relative overflow-hidden">
+      {/* Gray Background Circles */}
+      <div className="absolute -top-40 -right-40 w-[28rem] h-[28rem] bg-gray-100 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-40 -left-40 w-[28rem] h-[28rem] bg-gray-200 rounded-full blur-3xl"></div>
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Heading */}
@@ -66,11 +63,11 @@ const TestimonialsSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold bg-gradient-to-r from-decent-blue to-decent-lightBlue bg-clip-text text-transparent mb-5">
-            What Our Customers Say
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-black mb-5">
+            Our Customers Say
           </h2>
-          <div className="w-28 md:w-36 h-1 mx-auto bg-gradient-to-r from-decent-blue to-decent-lightBlue rounded-full relative">
-            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-6 h-3 bg-decent-lightBlue rounded-full animate-bounce"></div>
+          <div className="w-28 md:w-36 h-1 mx-auto bg-gradient-to-r from-gray-900 via-gray-600 to-gray-900 rounded-full relative">
+            <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-6 h-3 bg-black rounded-full animate-bounce"></div>
           </div>
           <p className="mt-6 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
             Real experiences from car owners who trusted us with their vehicles
@@ -91,13 +88,25 @@ const TestimonialsSection = () => {
               variants={itemVariants}
               whileHover={{
                 y: -10,
-                scale: 1.03,
-                boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
+                scale: 1.02,
               }}
               transition={{ duration: 0.3 }}
-              className="rounded-2xl bg-white/80 backdrop-blur-lg border border-gray-100"
+              className="relative rounded-2xl bg-white text-black border border-gray-300 shadow-md overflow-hidden group"
             >
-              <TestimonialCard {...testimonial} />
+              {/* Watermark Quote Icon */}
+              <Quote className="absolute top-4 right-4 w-10 h-10 text-gray-100 group-hover:text-gray-200 transition-colors duration-300" />
+              
+              <div className="relative z-10 p-6">
+                <TestimonialCard {...testimonial} />
+              </div>
+
+              {/* Hover invert effect */}
+              <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-90 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <p className="text-white text-lg font-semibold px-6 text-center">
+                  “{testimonial.testimonial.slice(0, 80)}...”
+                </p>
+              </div>
             </motion.div>
           ))}
         </motion.div>
