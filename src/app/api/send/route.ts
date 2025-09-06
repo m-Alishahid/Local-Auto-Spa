@@ -62,45 +62,45 @@
 // }
 
 
+// app/api/send/route.ts
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import { getAdminEmailTemplate, getUserEmailTemplate } from "@/utils/email";
+
+const resend = new Resend(process.env.RESEND_EMAIL_SECRET_KEY || "");
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { firstName, lastName, email } = body;
 
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
+    // Ensure date is a Date or ISO string acceptable to date-fns
+    if (body.date) {
+      body.date = new Date(body.date).toISOString();
+    }
+
+    const from = process.env.FROM_EMAIL || "abduljawed6663@gmail.com ";
+    const admin = process.env.ADMIN_EMAIL || "nomanirshad0324@gmail.com";
+
+    const userPromise = resend.emails.send({
+      from,
+      to: body.email,
+      subject: "✅ Booking Confirmation - Decent Auto Detailing",
+      html: getUserEmailTemplate(body),
     });
 
-    // ✅ Confirmation email to client (designed template)
-    await transporter.sendMail({
-      from: `"Detail Drive Shine" <${process.env.EMAIL_USER}>`,
-      to: email,
-      subject: "Booking Confirmation - Detail Drive Shine",
-      html: getUserEmailTemplate(body), // template function call
+    const adminPromise = resend.emails.send({
+      from,
+      to: admin,
+      subject: `📩 New Booking - ${body.firstName} ${body.lastName}`,
+      html: getAdminEmailTemplate(body),
     });
 
-    // ✅ Notification email to admin (designed template)
-    await transporter.sendMail({
-      from: `"Booking System" <${process.env.EMAIL_USER}>`,
-      to: "nomanirshad0324@gmail.com",
-      subject: `New Booking from ${firstName} ${lastName}`,
-      html: getAdminEmailTemplate(body), // template function call
-    });
+    const results = await Promise.all([userPromise, adminPromise]);
 
-    return NextResponse.json({ message: "Emails sent successfully" });
+    return NextResponse.json({ success: true, results });
   } catch (error: any) {
-    console.error("Email error:", error);
-    return NextResponse.json(
-      { message: "Failed to send emails", error: error.message },
-      { status: 500 }
-    );
+    console.error("Resend send error:", error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }
+
