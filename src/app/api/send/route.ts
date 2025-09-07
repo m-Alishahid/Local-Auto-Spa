@@ -78,8 +78,8 @@ export async function POST(req: Request) {
       body.date = new Date(body.date).toISOString();
     }
 
-    const from = process.env.FROM_EMAIL || "abduljawed6663@gmail.com ";
-    const admin = process.env.ADMIN_EMAIL || "nomanirshad0324@gmail.com";
+    const from = process.env.FROM_EMAIL || "onboarding@resend.dev";
+    const admin = process.env.ADMIN_EMAIL || "abduljawed6663@gmail.com ";
 
     const userPromise = resend.emails.send({
       from,
